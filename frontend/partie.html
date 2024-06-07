@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Création de partie - PolyNames</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="creation">
+    <div class="container">
+        <div id ="titre1">
+            <h1>Création de partie</h1>
+        </div>
+        <div id ="titre2">
+            <h1>Rejoindre la partie</h1>
+        </div>
+        <form action="#" method="post">
+            <label for="nom">Nom :</label>
+            <input type="text" id="nom" name="nom" required>
+            <div id="role">
+                <label for="option">Role :</label>
+                <select id="option" >
+                    <option selected disabled >Choississez un Role</option>
+                    <option value="mj">Maitre du jeu</option>
+                    <option value="mi">Maitre des intuitions</option>
+                </select>
+            </div>
+            <div id="code_partie" style="display: none;">
+                <label for="code_partie">Code de partie :</label>
+                <input type="text" id="code_partie" name="code_partie" required>
+            </div>
+            <button type="submit" class="bouton">Valider</button>
+        </form>
+    </div>
+    <script src="script.js">
+        
+    </script>
+</body>
+</html>
