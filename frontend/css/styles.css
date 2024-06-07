@@ -1,0 +1,77 @@
+:root {
+    user-select: none;
+}
+
+body {
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #1f103d;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
+
+.card {
+    position: relative;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    aspect-ratio: 11/16;
+    font-size: 30px;
+
+    padding: 10px;
+    box-sizing: border-box;
+    
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+
+.card[data-color="blue"] {
+    color: #000;
+}
+
+.card[data-color="gray"] {
+    color: #000;
+}
+
+.card[data-color="black"] {
+    color: #000;
+}
+
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
+
+.box {
+    width: 100px;
+    height: 100px;
+    background-color: lightblue;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ccc;
+    transition: transform 0.5s;
+}
+
+.box:hover {
+    transform: rotate(360deg);
+}
