@@ -16,7 +16,7 @@ export class ViewMemory extends Observer {
 
     displayCards() {
         const cardsContainer = document.querySelector(".cards");
-        cardsContainer.innerHTML = '';  // Clear existing cards
+        cardsContainer.innerHTML = '';
         const cardsNumber = this.#controllerMemory.memory.CardsNumber;
         for (let i = 0; i < cardsNumber; i++) {
             const card = this.#controllerMemory.memory.getCard(i);
@@ -28,7 +28,7 @@ export class ViewMemory extends Observer {
         const newCard = document.createElement("div");
         newCard.classList.add("card");
         newCard.dataset.color = card.color;
-        newCard.textContent = card.value;  // Display the word initially
+        newCard.textContent = card.word;
     
         newCard.addEventListener("click", () => {
             newCard.style.backgroundColor = newCard.dataset.color;
@@ -36,5 +36,6 @@ export class ViewMemory extends Observer {
     
         document.querySelector(".cards").appendChild(newCard);
     }
+    
     
 }

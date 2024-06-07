@@ -1,15 +1,23 @@
 export class Card {
-    #value;
+    #word;
     #color;
 
-    constructor(value, color) {
-        if (typeof value !== 'string') {
+    constructor(word, color) {
+        if (typeof word !== 'string') {
             throw new TypeError('value must be a string');
         }
-        this.#value = value;
+        if (typeof color !== 'string') {
+            throw new TypeError('value must be a string');
+        }
+        this.#word = word;
         this.#color = color;
     }
 
-    get value() { return this.#value }
-    get color() { return this.#color }
+    get word() {
+        return this.#word;
+    }
+
+    get color() {
+        return this.#color;
+    }
 }

@@ -4,7 +4,7 @@ import dao.CardDAO;
 import models.Card;
 import webserver.WebServerContext;
 
-public class Card {
+public class CardController {
     public static void findAll(WebServerContext context) {
         CardDAO CardDAO = new CardDAO();
         ArrayList<Card> CardsList = CardDAO.findAll();

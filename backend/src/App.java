@@ -1,4 +1,4 @@
-import controller.CarteController;
+import controller.CardController;
 import webserver.WebServer;
 import webserver.WebServerContext;
 
@@ -8,8 +8,8 @@ public class App {
             WebServer webserver = new WebServer();
             webserver.listen(8080);
             webserver.getRouter().get(
-                "/cartes", 
-                (WebServerContext context) -> { CarteController.findAll(context); }
+                "/cards", 
+                (WebServerContext context) -> { CardController.findAll(context); }
             );
         } 
         catch (Exception e) {}
