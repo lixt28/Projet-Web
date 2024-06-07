@@ -1,5 +1,3 @@
-
-
 -- Table Partie
 CREATE TABLE IF NOT EXISTS `Partie` (
   `id_Partie` INT(11) NOT NULL AUTO_INCREMENT,
@@ -53,7 +51,7 @@ INSERT INTO Participer (id_Partie, id_Joueur, role) VALUES
 -- Table Tour
 CREATE TABLE IF NOT EXISTS `Tour` (
   `id_Tour` INT(11) NOT NULL AUTO_INCREMENT,
-  `indice` INT NOT NULL,
+  `indice` VARCHAR(30) NOT NULL,
   `nombre_mot` INT,
   `score` INT,
   `id_Partie` INT(11),
@@ -64,10 +62,10 @@ CREATE TABLE IF NOT EXISTS `Tour` (
 
 -- Insertion des données dans la table Tour
 INSERT INTO Tour (indice, nombre_mot, score, id_Partie) VALUES
-(1, 10, 50, 1),
-(2, 15, 50, 1),
-(1, 20, 75, 2),
-(2, 10, 75, 2);
+("patate", 10, 50, 1),
+("tata", 15, 50, 1),
+("rocher", 20, 75, 2),
+("café", 10, 75, 2);
 
 
 
@@ -80,10 +78,9 @@ CREATE TABLE IF NOT EXISTS `Couleur` (
 
 -- Insertion des données dans la table Couleur
 INSERT INTO Couleur (nom_couleur) VALUES
-('Rouge'),
 ('Bleu'),
-('Vert'),
-('Jaune');
+('Gris'),
+('Noir');
 
 
 -- Table Mot
@@ -105,48 +102,48 @@ INSERT INTO Mot (mot, id_Couleur) VALUES
 ('Voiture', 2),
 ('Arbre', 3),
 ('Fleur', 3),
-('Bateau', 4),
-('Avion', 4),
-('Ordinateur', 1),
-('Téléphone', 1),
-('Livre', 2),
-('Stylo', 2),
-('Table', 3),
-('Chaise', 3),
-('Fenêtre', 4),
-('Porte', 4),
-('Ciel', 1),
-('Soleil', 1),
-('Lune', 2),
-('Étoile', 2),
-('Montagne', 3),
-('Rivière', 3),
-('Océan', 4),
-('Plage', 4),
+('Bateau', 1),
+('Avion', 1),
+('Ordinateur', 2),
+('Téléphone', 2),
+('Livre', 3),
+('Stylo', 3),
+('Table', 1),
+('Chaise', 1),
+('Fenêtre', 2),
+('Porte', 2),
+('Ciel', 3),
+('Soleil', 3),
+('Lune', 1),
+('Étoile', 1),
+('Montagne', 2),
+('Rivière', 2),
+('Océan', 3),
+('Plage', 3),
 ('Forêt', 1),
 ('Désert', 1),
 ('Île', 2),
 ('Continent', 2),
 ('Pays', 3),
 ('Ville', 3),
-('Village', 4),
-('Quartier', 4),
-('Rue', 1),
-('Autoroute', 1),
-('Chemin', 2),
-('Sentier', 2),
-('Pont', 3),
-('Tunnel', 3),
-('Bâtiment', 4),
-('Gratte-ciel', 4),
-('Parc', 1),
-('Jardin', 1),
-('École', 2),
-('Université', 2),
-('Hôpital', 3),
-('Clinique', 3),
-('Musée', 4),
-('Cinéma', 4),
+('Village', 1),
+('Quartier', 1),
+('Rue', 2),
+('Autoroute', 2),
+('Chemin', 3),
+('Sentier', 3),
+('Pont', 1),
+('Tunnel', 1),
+('Bâtiment', 2),
+('Gratte-ciel', 2),
+('Parc', 3),
+('Jardin', 3),
+('École', 1),
+('Université', 1),
+('Hôpital', 2),
+('Clinique', 2),
+('Musée', 3),
+('Cinéma', 3),
 ('Théâtre', 1),
 ('Bibliothèque', 1);
 
@@ -163,30 +160,17 @@ CREATE TABLE IF NOT EXISTS `Contenir` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
--- Insertion des données dans la table Contenir
+-- Insertion des données dans la table Contenir pour deux parties de 25 mots chacune
 INSERT INTO Contenir (id_Partie, id_Mot) VALUES
-(1, 1),
-(1, 2),
-(1, 3),
-(1, 4),
-(1, 5),
-(1, 6),
-(1, 7),
-(1, 8),
-(1, 9),
-(1, 10),
-(2, 11),
-(2, 12),
-(2, 13),
-(2, 14),
-(2, 15),
-(2, 16),
-(2, 17),
-(2, 18),
-(2, 19),
-(2, 20),
-(2, 21),
-(2, 22),
-(2, 23),
-(2, 24),
-(2, 25);
+-- Partie 1
+(1, 1), (1, 2), (1, 3), (1, 4), (1, 5),
+(1, 6), (1, 7), (1, 8), (1, 9), (1, 10),
+(1, 11), (1, 12), (1, 13), (1, 14), (1, 15),
+(1, 16), (1, 17), (1, 18), (1, 19), (1, 20),
+(1, 21), (1, 22), (1, 23), (1, 24), (1, 25),
+-- Partie 2
+(2, 26), (2, 27), (2, 28), (2, 29), (2, 30),
+(2, 31), (2, 32), (2, 33), (2, 34), (2, 35),
+(2, 36), (2, 37), (2, 38), (2, 39), (2, 40),
+(2, 41), (2, 42), (2, 43), (2, 44), (2, 45),
+(2, 46), (2, 47), (2, 48), (2, 49), (2, 50);
