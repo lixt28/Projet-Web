@@ -7,6 +7,7 @@
 </head>
 <body>
     <h1>Choice of role</h1>
+
     <form id="role-form">
         <div>
             <label>Name : </label>
@@ -17,16 +18,23 @@
             <select id="selection" required>
                 <option value="" disabled selected>Choose a role</option>
                 <option value="GM">Game Master</option>
-                <option value="MI">Master of intuitions</option> 
+                <option value="MI">Master of Intuitions</option> 
             </select>
         </div>
         <button type="submit">Submit</button>
     </form>
 
     <script>
-        document.getElementById('role-form').addEventListener('submit', function(event) {
+        document.getElementById("role-form").addEventListener("submit", function(event) {
             event.preventDefault();
-            window.location.href = 'game.html';
+
+            var playerName = document.getElementById("name").value;
+            localStorage.setItem("playerName", playerName);
+            
+            var playerRole = document.getElementById("selection").value;
+            localStorage.setItem("playerRole", playerRole);
+            
+            window.location.href = "game.html";
         });
     </script>
 </body>

@@ -58,7 +58,6 @@ export class Memory {
                     colors.push(word.color);
                 }
             }
-            
         });
 
         for (let i = 0; i < cardNumber; i++) {
