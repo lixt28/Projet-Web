@@ -1,4 +1,4 @@
-import { CartesService } from "../services/cartes-service.js";
+import { CardsService } from "../services/cards-service.js";
 import { Card } from "./card.js";
 
 export class Memory {
@@ -35,8 +35,8 @@ export class Memory {
     }
       
     async getCards() {
-        const cartes = await CartesService.findAll();
-        return cartes;
+        const cards= await CardsService.findAll();
+        return cards;
     }
 
     async newGame(cardNumber) {

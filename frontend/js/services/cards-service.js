@@ -1,4 +1,4 @@
-export class CartesService {
+export class CardsService {
     static async findAll() {
         const response = await fetch("http://localhost:8080/cards");
 

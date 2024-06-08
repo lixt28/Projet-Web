@@ -12,15 +12,15 @@ public class CardDAO {
     public ArrayList<Card> findAll() {
         ArrayList<Card> cardsList = new ArrayList<>();
         try {
-            PolyNamesDatabase connexion = new PolyNamesDatabase();
-            PreparedStatement statement = connexion.prepareStatement("SELECT * FROM word");
+            PolyNamesDatabase connection = new PolyNamesDatabase();
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM word");
             ResultSet results = statement.executeQuery();
 
             while (results.next()) {
                 String word = results.getString("word");
                 int color_id = results.getInt("color_id");
 
-                PreparedStatement color_request = connexion.prepareStatement("SELECT * FROM color WHERE color_id=?");
+                PreparedStatement color_request = connection.prepareStatement("SELECT * FROM color WHERE color_id=?");
                 color_request.setInt(1,color_id);
                 ResultSet color_results = color_request.executeQuery();
 
