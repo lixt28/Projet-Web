@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Role Choice Menu</title>
+    <title>Role selection menu</title>
 </head>
 <body>
-    <h1>Choix du rôle</h1>
+    <h1>Choice of role</h1>
     <form id="role-form">
         <div>
-            <label>Nom : </label>
+            <label>Name : </label>
             <input type="text" id="name" required>
         </div>
         <div>
             <label>Selection : </label>
             <select id="selection" required>
-                <option value="" disabled selected>Choisissez un rôle</option>
-                <option value="MJ">Maître du jeu</option>
-                <option value="MI">Maître des intuitions</option> 
+                <option value="" disabled selected>Choose a role</option>
+                <option value="GM">Game Master</option>
+                <option value="MI">Master of intuitions</option> 
             </select>
         </div>
         <button type="submit">Submit</button>
@@ -26,7 +26,7 @@
     <script>
         document.getElementById('role-form').addEventListener('submit', function(event) {
             event.preventDefault();
-            window.location.href = 'jeu.html';
+            window.location.href = 'game.html';
         });
     </script>
 </body>
