@@ -8,28 +8,29 @@
 </head>
 <body class="creation">
     <div class="container">
-        <div id ="titre1">
+        <div id ="title1">
             <h1>Création de partie</h1>
         </div>
-        <div id ="titre2">
+        <div id ="title2">
             <h1>Rejoindre la partie</h1>
         </div>
-        <form action="#" method="post">
-            <label for="nom">Nom :</label>
-            <input type="text" id="nom" name="nom" required>
-            <div id="role">
-                <label for="option">Role :</label>
-                <select id="option" >
-                    <option selected disabled >Choississez un Role</option>
+        <form action="#" method="post" id ="form">
+            <label for="name">Nom :</label>
+            <input type="text" id="name" name="name" required>
+            <div id="role_block">
+                <label for="role">Role :</label>
+                <select id="role" name="role" required>
+                    <option selected disabled value ="null">Choississez un Role</option>
                     <option value="mj">Maitre du jeu</option>
                     <option value="mi">Maitre des intuitions</option>
+                    <option value ="aleatoire">Aléatoire</option>
                 </select>
             </div>
-            <div id="code_partie" style="display: none;">
-                <label for="code_partie">Code de partie :</label>
-                <input type="text" id="code_partie" name="code_partie" required>
+            <div id="part_code_block" style="display: none;">
+                <label for="part_code">Code de partie :</label>
+                <input type="text" id="part_code" name="part_code" required>
             </div>
-            <button type="submit" class="bouton">Valider</button>
+            <button type="submit" class="bouton"  Onclick="PartManagement()" >Valider</button>
         </form>
     </div>
     <script src="script.js">

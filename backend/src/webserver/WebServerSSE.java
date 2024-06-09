@@ -84,7 +84,7 @@ public class WebServerSSE {
         }
 
         if (channelUsers.contains(clientId) == false) {
-            context.getResponse().notFound("Not subscribe to this channel");
+            context.getResponse().notFound("Not subscribed to this channel");
             return;
         }
 
@@ -119,27 +119,24 @@ public class WebServerSSE {
             stream.write("\n\n".getBytes());
             stream.flush();
         } catch (Exception e) {
-
+            // Handle exception appropriately
         }
     }
 
-    public void addEventListeners(WebServerSSEEventType eventType, WebServerSSEEventHandler handler)
-    {
-        if(this.eventListeners.containsKey(eventType.value) == false)
+    public void addEventListeners(WebServerSSEEventType eventType, WebServerSSEEventHandler handler) {
+        if (this.eventListeners.containsKey(eventType.value) == false)
             this.eventListeners.put(eventType.value, new ArrayList<WebServerSSEEventHandler>());
 
         this.eventListeners.get(eventType.value).add(handler);
     }
 
-    private void dispatchEvent(WebServerSSEEventType eventType, WebServerSSEEvent event)
-    {
+    private void dispatchEvent(WebServerSSEEventType eventType, WebServerSSEEvent event) {
         ArrayList<WebServerSSEEventHandler> handlers = this.eventListeners.get(eventType.value);
 
-        if(handlers == null)
+        if (handlers == null)
             return;
 
-        for(WebServerSSEEventHandler handler: handlers)
-        {
+        for (WebServerSSEEventHandler handler : handlers) {
             handler.run(event);
         }
     }

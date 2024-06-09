@@ -1,15 +1,17 @@
 package controller;
 import java.util.ArrayList;
-import dao.CarteDAO;
-import models.Carte;
+import dao.WordDAO;
+import models.Word;
 import webserver.WebServerContext;
 
-public class CarteController {
+
+public class WordController {
     public static void findAll(WebServerContext context) {
-        CarteDAO productsDAO = new CarteDAO();
-        ArrayList<Carte> listOfProducts = productsDAO.findAll();
+        WordDAO productsDAO = new WordDAO();
+        ArrayList<Word> listOfProducts = productsDAO.findAll();
         context.getResponse().json(listOfProducts);
     }
 }
+
 
 
