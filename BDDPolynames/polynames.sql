@@ -1,174 +1,274 @@
--- Table Partie
-CREATE TABLE IF NOT EXISTS `Partie` (
-  `id_Partie` INT(11) NOT NULL AUTO_INCREMENT,
-  `code_Partie` VARCHAR(50) COLLATE utf8_unicode_ci NOT NULL,
-  `score_final` INT,
-  PRIMARY KEY (`id_Partie`)
+-- Table Game
+CREATE TABLE IF NOT EXISTS `Game` (
+  `game_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `game_code` VARCHAR(50) COLLATE utf8_unicode_ci NOT NULL,
+  `final_score` INT,
+  PRIMARY KEY (`game_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Insertion des données dans la table Partie
-INSERT INTO Partie (code_Partie, score_final) VALUES
-('P001', 100),
-('P002', 150);
+-- Inserting data into the Game table
+INSERT INTO Game (game_code, final_score) VALUES
+('G001', 100),
+('G002', 150);
 
 
--- Table Joueur
-CREATE TABLE IF NOT EXISTS `Joueur` (
-  `id_Joueur` INT(11) NOT NULL AUTO_INCREMENT,
-  `nom` VARCHAR(100) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id_Joueur`)
+-- Table Player
+CREATE TABLE IF NOT EXISTS `Player` (
+  `player_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`player_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Insertion des données dans la table Joueur
-INSERT INTO Joueur (nom) VALUES
+-- Inserting data into the Player table
+INSERT INTO Player (name) VALUES
 ('Alice'),
 ('Bob'),
 ('Charlie'),
 ('Diana');
 
 
--- Table Participer (association entre Partie et Joueur)
-CREATE TABLE IF NOT EXISTS `Participer` (
-  `id_Partie` INT(11) NOT NULL,
-  `id_Joueur` INT(11) NOT NULL,
+-- Table Participate (association between Game and Player)
+CREATE TABLE IF NOT EXISTS `Participate` (
+  `game_id` INT(11) NOT NULL,
+  `player_id` INT(11) NOT NULL,
   `role` VARCHAR(50) COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`id_Partie`, `id_Joueur`),
-  KEY `FK_Participer_Partie` (`id_Partie`),
-  KEY `FK_Participer_Joueur` (`id_Joueur`),
-  CONSTRAINT `FK_Participer_Partie` FOREIGN KEY (`id_Partie`) REFERENCES `Partie` (`id_Partie`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK_Participer_Joueur` FOREIGN KEY (`id_Joueur`) REFERENCES `Joueur` (`id_Joueur`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`game_id`, `player_id`),
+  KEY `FK_Participate_Game` (`game_id`),
+  KEY `FK_Participate_Player` (`player_id`),
+  CONSTRAINT `FK_Participate_Game` FOREIGN KEY (`game_id`) REFERENCES `Game` (`game_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_Participate_Player` FOREIGN KEY (`player_id`) REFERENCES `Player` (`player_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Insertion des données dans la table Participer
-INSERT INTO Participer (id_Partie, id_Joueur, role) VALUES
-(1, 1, 'capitaine'),
-(1, 2, 'membre'),
-(2, 3, 'capitaine'),
-(2, 4, 'membre');
+-- Inserting data into the Participate table
+INSERT INTO Participate (game_id, player_id, role) VALUES
+(1, 1, 'captain'),
+(1, 2, 'member'),
+(2, 3, 'captain'),
+(2, 4, 'member');
 
 
 
--- Table Tour
-CREATE TABLE IF NOT EXISTS `Tour` (
-  `id_Tour` INT(11) NOT NULL AUTO_INCREMENT,
-  `indice` VARCHAR(30) NOT NULL,
-  `nombre_mot` INT,
+-- Table Turn
+CREATE TABLE IF NOT EXISTS `Turn` (
+  `turn_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `hint` VARCHAR(30) NOT NULL,
+  `word_count` INT,
   `score` INT,
-  `id_Partie` INT(11),
-  PRIMARY KEY (`id_Tour`),
-  KEY `FK_Tour_Partie` (`id_Partie`),
-  CONSTRAINT `FK_Tour_Partie` FOREIGN KEY (`id_Partie`) REFERENCES `Partie` (`id_Partie`) ON DELETE CASCADE ON UPDATE CASCADE
+  `game_id` INT(11),
+  PRIMARY KEY (`turn_id`),
+  KEY `FK_Turn_Game` (`game_id`),
+  CONSTRAINT `FK_Turn_Game` FOREIGN KEY (`game_id`) REFERENCES `Game` (`game_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Insertion des données dans la table Tour
-INSERT INTO Tour (indice, nombre_mot, score, id_Partie) VALUES
-("patate", 10, 50, 1),
-("tata", 15, 50, 1),
-("rocher", 20, 75, 2),
-("café", 10, 75, 2);
+-- Inserting data into the Turn table
+INSERT INTO Turn (hint, word_count, score, game_id) VALUES
+("potato", 10, 50, 1),
+("aunt", 15, 50, 1),
+("rock", 20, 75, 2),
+("coffee", 10, 75, 2);
 
 
 
--- Table Couleur
-CREATE TABLE IF NOT EXISTS `Couleur` (
-  `id_Couleur` INT(11) NOT NULL AUTO_INCREMENT,
-  `nom_couleur` VARCHAR(50) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id_Couleur`)
+-- Table Color
+CREATE TABLE IF NOT EXISTS `Color` (
+  `color_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `color_name` VARCHAR(50) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`color_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Insertion des données dans la table Couleur
-INSERT INTO Couleur (nom_couleur) VALUES
-('Bleu'),
-('Gris'),
-('Noir');
+-- Inserting data into the Color table
+INSERT INTO Color (color_name) VALUES
+('Blue'),
+('Gray'),
+('Black');
 
 
--- Table Mot
-CREATE TABLE IF NOT EXISTS `Mot` (
-  `id_Mot` INT(11) NOT NULL AUTO_INCREMENT,
-  `mot` VARCHAR(100) COLLATE utf8_unicode_ci NOT NULL,
-  `id_Couleur` INT(11),
-  PRIMARY KEY (`id_Mot`),
-  KEY `FK_Mot_Couleur` (`id_Couleur`),
-  CONSTRAINT `FK_Mot_Couleur` FOREIGN KEY (`id_Couleur`) REFERENCES `Couleur` (`id_Couleur`) ON DELETE CASCADE ON UPDATE CASCADE
+-- Table Word
+CREATE TABLE IF NOT EXISTS `Word` (
+  `word_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `word` VARCHAR(100) COLLATE utf8_unicode_ci NOT NULL,
+  `color_id` INT(11),
+  PRIMARY KEY (`word_id`),
+  KEY `FK_Word_Color` (`color_id`),
+  CONSTRAINT `FK_Word_Color` FOREIGN KEY (`color_id`) REFERENCES `Color` (`color_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
--- Insertion des données dans la table Mot (dictionnaire de 50 mots)
-INSERT INTO Mot (mot, id_Couleur) VALUES
-('Chat', 1),
-('Chien', 1),
-('Maison', 2),
-('Voiture', 2),
-('Arbre', 3),
-('Fleur', 3),
-('Bateau', 1),
-('Avion', 1),
-('Ordinateur', 2),
-('Téléphone', 2),
-('Livre', 3),
-('Stylo', 3),
+-- Inserting data into the Word table (dictionary of 50 words)
+INSERT INTO Word (word, color_id) VALUES
+('Cat', 1),
+('Cat', 2),
+('Cat', 3),
+('Dog', 1),
+('Dog', 2),
+('Dog', 3),
+('House', 1),
+('House', 2),
+('House', 3),
+('Car', 1),
+('Car', 2),
+('Car', 3),
+('Tree', 1),
+('Tree', 2),
+('Tree', 3),
+('Flower', 1),
+('Flower', 2),
+('Flower', 3),
+('Boat', 1),
+('Boat', 2),
+('Boat', 3),
+('Plane', 1),
+('Plane', 2),
+('Plane', 3),
+('Computer', 1),
+('Computer', 2),
+('Computer', 3),
+('Phone', 1),
+('Phone', 2),
+('Phone', 3),
+('Book', 1),
+('Book', 2),
+('Book', 3),
+('Pen', 1),
+('Pen', 2),
+('Pen', 3),
 ('Table', 1),
-('Chaise', 1),
-('Fenêtre', 2),
-('Porte', 2),
-('Ciel', 3),
-('Soleil', 3),
-('Lune', 1),
-('Étoile', 1),
-('Montagne', 2),
-('Rivière', 2),
-('Océan', 3),
-('Plage', 3),
-('Forêt', 1),
-('Désert', 1),
-('Île', 2),
+('Table', 2),
+('Table', 3),
+('Chair', 1),
+('Chair', 2),
+('Chair', 3),
+('Window', 1),
+('Window', 2),
+('Window', 3),
+('Door', 1),
+('Door', 2),
+('Door', 3),
+('Sky', 1),
+('Sky', 2),
+('Sky', 3),
+('Sun', 1),
+('Sun', 2),
+('Sun', 3),
+('Moon', 1),
+('Moon', 2),
+('Moon', 3),
+('Star', 1),
+('Star', 2),
+('Star', 3),
+('Mountain', 1),
+('Mountain', 2),
+('Mountain', 3),
+('River', 1),
+('River', 2),
+('River', 3),
+('Ocean', 1),
+('Ocean', 2),
+('Ocean', 3),
+('Beach', 1),
+('Beach', 2),
+('Beach', 3),
+('Forest', 1),
+('Forest', 2),
+('Forest', 3),
+('Desert', 1),
+('Desert', 2),
+('Desert', 3),
+('Island', 1),
+('Island', 2),
+('Island', 3),
+('Continent', 1),
 ('Continent', 2),
-('Pays', 3),
-('Ville', 3),
+('Continent', 3),
+('Country', 1),
+('Country', 2),
+('Country', 3),
+('City', 1),
+('City', 2),
+('City', 3),
 ('Village', 1),
-('Quartier', 1),
-('Rue', 2),
-('Autoroute', 2),
-('Chemin', 3),
-('Sentier', 3),
-('Pont', 1),
+('Village', 2),
+('Village', 3),
+('Neighborhood', 1),
+('Neighborhood', 2),
+('Neighborhood', 3),
+('Street', 1),
+('Street', 2),
+('Street', 3),
+('Highway', 1),
+('Highway', 2),
+('Highway', 3),
+('Path', 1),
+('Path', 2),
+('Path', 3),
+('Trail', 1),
+('Trail', 2),
+('Trail', 3),
+('Bridge', 1),
+('Bridge', 2),
+('Bridge', 3),
 ('Tunnel', 1),
-('Bâtiment', 2),
-('Gratte-ciel', 2),
-('Parc', 3),
-('Jardin', 3),
-('École', 1),
-('Université', 1),
-('Hôpital', 2),
-('Clinique', 2),
-('Musée', 3),
-('Cinéma', 3),
-('Théâtre', 1),
-('Bibliothèque', 1);
+('Tunnel', 2),
+('Tunnel', 3),
+('Building', 1),
+('Building', 2),
+('Building', 3),
+('Skyscraper', 1),
+('Skyscraper', 2),
+('Skyscraper', 3),
+('Park', 1),
+('Park', 2),
+('Park', 3),
+('Garden', 1),
+('Garden', 2),
+('Garden', 3),
+('School', 1),
+('School', 2),
+('School', 3),
+('University', 1),
+('University', 2),
+('University', 3),
+('Hospital', 1),
+('Hospital', 2),
+('Hospital', 3),
+('Clinic', 1),
+('Clinic', 2),
+('Clinic', 3),
+('Museum', 1),
+('Museum', 2),
+('Museum', 3),
+('Cinema', 1),
+('Cinema', 2),
+('Cinema', 3),
+('Theater', 1),
+('Theater', 2),
+('Theater', 3),
+('Library', 1),
+('Library', 2),
+('Library', 3);
 
 
--- Table Contenir (association entre Partie et Mot)
-CREATE TABLE IF NOT EXISTS `Contenir` (
-  `id_Partie` INT(11) NOT NULL,
-  `id_Mot` INT(11) NOT NULL,
-  PRIMARY KEY (`id_Partie`, `id_Mot`),
-  KEY `FK_Contenir_Partie` (`id_Partie`),
-  KEY `FK_Contenir_Mot` (`id_Mot`),
-  CONSTRAINT `FK_Contenir_Partie` FOREIGN KEY (`id_Partie`) REFERENCES `Partie` (`id_Partie`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK_Contenir_Mot` FOREIGN KEY (`id_Mot`) REFERENCES `Mot` (`id_Mot`) ON DELETE CASCADE ON UPDATE CASCADE
+-- Table Contain (association between Game and Word)
+CREATE TABLE IF NOT EXISTS `Contain` (
+  `game_id` INT(11) NOT NULL,
+  `word_id` INT(11) NOT NULL,
+  PRIMARY KEY (`game_id`, `word_id`),
+  KEY `FK_Contain_Game` (`game_id`),
+  KEY `FK_Contain_Word` (`word_id`),
+  CONSTRAINT `FK_Contain_Game` FOREIGN KEY (`game_id`) REFERENCES `Game` (`game_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_Contain_Word` FOREIGN KEY (`word_id`) REFERENCES `Word` (`word_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
--- Insertion des données dans la table Contenir pour deux parties de 25 mots chacune
-INSERT INTO Contenir (id_Partie, id_Mot) VALUES
--- Partie 1
+-- Inserting data into the Contain table for two games of 25 words each
+INSERT INTO Contain (game_id, word_id) VALUES
+-- Game 1
 (1, 1), (1, 2), (1, 3), (1, 4), (1, 5),
 (1, 6), (1, 7), (1, 8), (1, 9), (1, 10),
 (1, 11), (1, 12), (1, 13), (1, 14), (1, 15),
 (1, 16), (1, 17), (1, 18), (1, 19), (1, 20),
 (1, 21), (1, 22), (1, 23), (1, 24), (1, 25),
--- Partie 2
+-- Game 2
 (2, 26), (2, 27), (2, 28), (2, 29), (2, 30),
 (2, 31), (2, 32), (2, 33), (2, 34), (2, 35),
 (2, 36), (2, 37), (2, 38), (2, 39), (2, 40),
