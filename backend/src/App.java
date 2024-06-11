@@ -1,4 +1,4 @@
-import controller.WordController;
+import controller.CardController;
 import controller.PartController;
 import webserver.WebServer;
 import webserver.WebServerContext;
@@ -10,13 +10,14 @@ public class App {
             WebServer webserver = new WebServer();
             webserver.listen(8080);
             webserver.getRouter().get(
-                "word", 
-                (WebServerContext context) -> { WordController.findAll(context); }
+                "/cards", 
+                (WebServerContext context) -> { CardController.findAll(context); }
             );
-            
-            webserver.getRouter().get(
+            webserver.getRouter().post(
                 "/part", 
-                (WebServerContext request) -> { PartController.insertNewPart(request); }
+                (WebServerContext context) -> { 
+                    System.out.println("Handling /part post request");
+                    PartController.insertNewPart(context); }
             );
            
 
