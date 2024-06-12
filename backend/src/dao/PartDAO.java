@@ -5,8 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import database.PolyNamesDatabase;
+import models.Card;
+import models.Message;
 import models.Part;
 
 public class PartDAO {
@@ -78,8 +81,10 @@ public class PartDAO {
         }
     }
 
-    public boolean jointPart(Part partData) {
+    public ArrayList<Message> jointPart(Part partData) {
+        ArrayList<Message> PartMessage = new ArrayList<>();
         try{
+            
             String name = partData.name();
             String partCode = partData.partCode();
 
@@ -101,7 +106,9 @@ public class PartDAO {
              // Vérification des membres
              if (!VerificationMemberPart(gameId)) {
                 System.out.println("Vous ne pouvez plus rejoindre la partie");
-                return false;
+                Message Message = new Message("false");
+                PartMessage.add(Message);
+                return PartMessage;
                 
             }
 
@@ -145,16 +152,21 @@ public class PartDAO {
            
            // Vérification des insertions et affichage des messages de succès ou d'erreur
                 if (rowsAffectedPlayer > 0 && results4> 0 ) {
-                    return true;
-                    
+                    Message Message = new Message("true");
+                PartMessage.add(Message);
+                return PartMessage;
                 } else {
-                    return false;
+                    Message Message = new Message("false");
+                    PartMessage.add(Message);
+                    return PartMessage;
                 }
                     
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        Message Message = new Message("false");
+        PartMessage.add(Message);
+        return PartMessage;
     
     }
 }

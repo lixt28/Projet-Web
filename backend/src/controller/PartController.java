@@ -1,6 +1,10 @@
 package controller;
 
+import java.util.ArrayList;
+
 import dao.PartDAO;
+import models.Card;
+import models.Message;
 import models.Part;
 import webserver.WebServerContext;
 
@@ -18,29 +22,20 @@ public class PartController {
             // Insérer les données de la partie dans la base de données
             PartDAO partDAO = new PartDAO();
             
-            
+           
             if(partData.IsnotcreatorOfGame().equals("false")){
                 partDAO.insertPart(partData);
                 
             }else{
-                ResponsePart(request);
-                partDAO.jointPart(partData);
+
+                ArrayList<Message> PartMessage  = partDAO.jointPart(partData);
+                request.getResponse().json(PartMessage); 
             }
 
             
         }
     }
 
-    public static void ResponsePart(WebServerContext context) {
-        Part partData = context.getRequest().extractBody(Part.class);
-        PartDAO partDAO = new PartDAO();
-        boolean result;
-        if(partData.IsnotcreatorOfGame().equals("true")){
-            result = partDAO.jointPart(partData);
-            context.getResponse().json("{\"message\": \"" + result + "\"}");
-        }
-
-        
-    }
+    
 }
 

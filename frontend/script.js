@@ -42,7 +42,8 @@ console.log('JSON envoyé:', JSON.stringify({
 .then(response => response.json())
 .then(data => {
     console.log(data);
-    alert(data.message);
+    console.log(JSON.stringify(data))
+    alert(JSON.stringify(data).message);
     if (data.message == "true") {
         setTimeout(() => {
             // Redirigez l'utilisateur vers la page jeu.html après avoir traité le formulaire
