@@ -1,5 +1,6 @@
 package dao;
 
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,6 +10,29 @@ import database.PolyNamesDatabase;
 import models.Part;
 
 public class PartDAO {
+
+    // Méthode de vérification
+    private boolean VerificationMemberPart(int gameId) {
+        boolean canJoin = false;
+    
+        try {
+            PolyNamesDatabase connexion = new PolyNamesDatabase();
+            
+            String sql = "SELECT COUNT(*) AS player_id FROM participate WHERE game_id = ?";
+            PreparedStatement statement = connexion.prepareStatement(sql);
+            statement.setInt(1, gameId);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt("player_id");
+                if (count < 2) {
+                    canJoin = true;
+                }
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return canJoin;
+    }
 
     public void insertPart(Part part) {
         try {
@@ -54,7 +78,7 @@ public class PartDAO {
         }
     }
 
-    public void jointPart(Part partData) {
+    public boolean jointPart(Part partData) {
         try{
             String name = partData.name();
             String partCode = partData.partCode();
@@ -62,27 +86,36 @@ public class PartDAO {
             PolyNamesDatabase connexion = new PolyNamesDatabase();
 
 
-            String sql1 = "INSERT INTO player (name) VALUES (?)";
-            PreparedStatement statement1 = connexion.prepareStatement(sql1,Statement.RETURN_GENERATED_KEYS);
-            statement1.setString(1, name);
-            int rowsAffectedPlayer =  statement1.executeUpdate();
-            ResultSet rs1 = statement1.getGeneratedKeys();
-            int player2_Id = 0;
-            if (rs1.next()) {
-                player2_Id = rs1.getInt(1);
-            }
-
 
            
 
-            String sql2 = "SELECT game_id from game where game_code = ?";
-            PreparedStatement statement2 = connexion.prepareStatement(sql2);
-            statement2.setString(1, partCode);
-            ResultSet results2 = statement2.executeQuery();
+            String sql1 = "SELECT game_id from game where game_code = ?";
+            PreparedStatement statement1 = connexion.prepareStatement(sql1);
+            statement1.setString(1, partCode);
+            ResultSet results1 = statement1.executeQuery();
             int gameId = 0;
-            if (results2.next()) {
-                gameId = results2.getInt("game_id");
+            if (results1.next()) {
+                gameId = results1.getInt("game_id");
             }
+
+             // Vérification des membres
+             if (!VerificationMemberPart(gameId)) {
+                System.out.println("Vous ne pouvez plus rejoindre la partie");
+                return false;
+                
+            }
+
+
+            String sql2 = "INSERT INTO player (name) VALUES (?)";
+            PreparedStatement statement2 = connexion.prepareStatement(sql2,Statement.RETURN_GENERATED_KEYS);
+            statement2.setString(1, name);
+            int rowsAffectedPlayer =  statement2.executeUpdate();
+            ResultSet rs2 = statement1.getGeneratedKeys();
+            int player2_Id = 0;
+            if (rs2.next()) {
+                player2_Id = rs2.getInt(1);
+            }
+
 
             String sql3 = "SELECT * FROM participate WHERE game_id = ? ";
             PreparedStatement statement3 = connexion.prepareStatement(sql3);
@@ -112,14 +145,16 @@ public class PartDAO {
            
            // Vérification des insertions et affichage des messages de succès ou d'erreur
                 if (rowsAffectedPlayer > 0 && results4> 0 ) {
-                    System.out.println("Insertion réussie des informations du joueur qui rejoins la partie !");
+                    return true;
+                    
                 } else {
-                    System.out.println("Erreur lors de l'insertion des informations du joueur qui rejoins la partie  .");
+                    return false;
                 }
                     
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     
     }
 }

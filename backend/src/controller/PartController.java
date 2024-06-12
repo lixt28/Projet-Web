@@ -13,18 +13,34 @@ public class PartController {
             System.out.println("Name: " + partData.name());
             System.out.println("Role: " + partData.role());
             System.out.println("Part Code: " + partData.partCode());
+            System.out.println(" Is Not Game Creator : " + partData.IsnotcreatorOfGame());
+            
             // Insérer les données de la partie dans la base de données
             PartDAO partDAO = new PartDAO();
-            if(partData.role().equals("mj")){
+            
+            
+            if(partData.IsnotcreatorOfGame().equals("false")){
                 partDAO.insertPart(partData);
+                
             }else{
+                ResponsePart(request);
                 partDAO.jointPart(partData);
             }
 
-            // Répondre à la requête avec un message de succès
-            request.getResponse().json("{\"message\": \"Partie créée avec succès\"}");
+            
         }
     }
 
+    public static void ResponsePart(WebServerContext context) {
+        Part partData = context.getRequest().extractBody(Part.class);
+        PartDAO partDAO = new PartDAO();
+        boolean result;
+        if(partData.IsnotcreatorOfGame().equals("true")){
+            result = partDAO.jointPart(partData);
+            context.getResponse().json("{\"message\": \"" + result + "\"}");
+        }
+
+        
+    }
 }
 

@@ -19,7 +19,12 @@ public class App {
                     System.out.println("Handling /part post request");
                     PartController.insertNewPart(context); }
             );
-           
+            webserver.getRouter().get(
+                "/part", 
+                (WebServerContext context) -> { 
+                    System.out.println("Handling /part get request");
+                    PartController.ResponsePart(context); }
+            );
 
         } 
         catch (Exception e) {}

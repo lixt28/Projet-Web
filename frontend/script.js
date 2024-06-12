@@ -1,7 +1,10 @@
 function handleSubmit(event) {
     event.preventDefault(); // Empêche l'envoi du formulaire
 
+    const urlParams = new URLSearchParams(window.location.search);
+    const rejoindre = urlParams.get('rejoindre');
     // Récupérer les valeurs des champs du formulaire
+    var IsnotcreatorOfGame = (rejoindre === "true") ? "true" : (rejoindre == '') ? "false" : "false";
     var name = document.getElementById('name').value;
     var roleSelect = document.getElementById('role');
     var roleOption = roleSelect.options[roleSelect.selectedIndex].value;
@@ -14,7 +17,8 @@ function handleSubmit(event) {
 console.log('JSON envoyé:', JSON.stringify({
         name,
         role,
-        partCode
+        partCode,
+        IsnotcreatorOfGame
     }));
     // Ajoutez ici le code pour insérer les données dans la base de données via votre API Java
     // Par exemple, en utilisant fetch() ou XMLHttpRequest
@@ -31,16 +35,21 @@ console.log('JSON envoyé:', JSON.stringify({
         name,
         role,
         partCode,
+        IsnotcreatorOfGame
         // Ajoutez ici d'autres champs si nécessaire
     }),
 })
 .then(response => response.json())
 .then(data => {
-    console.log('Success:', data);
-     setTimeout(() => {
+    console.log(data);
+    alert(data.message);
+    if (data.message == "true") {
+        setTimeout(() => {
             // Redirigez l'utilisateur vers la page jeu.html après avoir traité le formulaire
             window.location.href = 'jeu.html';
         }, 3000); // Délai de 3 secondes
+    }
+    
 })
 .catch((error) => {
     console.error('Error:', error);
