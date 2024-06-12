@@ -15,7 +15,7 @@ public class PartController {
             System.out.println("Part Code: " + partData.partCode());
             // Insérer les données de la partie dans la base de données
             PartDAO partDAO = new PartDAO();
-            if(partData.role() == "mj"){
+            if(partData.role().equals("mj")){
                 partDAO.insertPart(partData);
             }else{
                 partDAO.jointPart(partData);
