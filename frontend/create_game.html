@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PolyNames's Menu</title>
+</head>
+<body>
+    <h1>Play PolyNames</h1>
+    <button id="create-game">Create New Game</button>
+
+    <script>
+        function generateRandomString(length) {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let result = '';
+            for (let i = 0; i < length; i++) {
+                result += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            return result;
+        }
+
+        document.getElementById('create-game').addEventListener('click', (event) => {
+            event.preventDefault();
+            const gameId = generateRandomString(5);
+            localStorage.setItem("gameId", gameId);
+            window.location.href = 'role_choice.html';
+        });
+    </script>
+</body>
+</html>

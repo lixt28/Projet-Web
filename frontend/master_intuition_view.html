@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game</title>
+    <title>MI View</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -13,12 +13,6 @@
                 <h2>Players</h2>
                 <p>Game Master : <span id="player_1"></span></p>
                 <p>Master of Intuitions : <span id="player_2"></span></p>
-            </div>
-            <div id="hint-container" class="hint-container">
-                <input type="text" placeholder="Enter a hint" id="hint" name="hint">
-                <input type="text" placeholder="Number of words the clue is likely to match." id="n" name="n">
-                <button id="submitHint">Submit</button>
-                
             </div>
         </div>
         <div class="column">
@@ -46,3 +40,24 @@
     <script src="js/main.js" type="module"></script>
 </body>
 </html>
+
+    <!-- <script>
+        function updateHintFromStorage() {
+            const hintGiven = localStorage.getItem('hintGiven');
+            const nGiven = localStorage.getItem('nGiven');
+            if (hintGiven && nGiven) {
+                document.getElementById('hintText').textContent = hintGiven;
+                document.getElementById('hintN').textContent = nGiven;
+                console.log('Hint updated from storage:', hintGiven, nGiven);
+            }
+        }
+
+        window.addEventListener('storage', function(event) {
+            if (event.key === 'hintGiven' || event.key === 'nGiven') {
+                updateHintFromStorage();
+            }
+        });
+
+        updateHintFromStorage();
+    </script> -->
+    

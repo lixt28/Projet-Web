@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Role selection menu</title>
+    <title>Role Selection Menu</title>
 </head>
 <body>
     <h1>Choice of role</h1>
@@ -15,7 +15,7 @@
         </div>
         <div>
             <label>Selection : </label>
-            <select id="selection" required>
+            <select id="role" required>
                 <option value="" disabled selected>Choose a role</option>
                 <option value="GM">Game Master</option>
                 <option value="MI">Master of Intuitions</option> 
@@ -25,16 +25,21 @@
     </form>
 
     <script>
-        document.getElementById("role-form").addEventListener("submit", function(event) {
+        document.getElementById("role-form").addEventListener("submit", (event) => {
             event.preventDefault();
 
-            var playerName = document.getElementById("name").value;
+            const playerName = document.getElementById("name").value;
             localStorage.setItem("playerName", playerName);
             
-            var playerRole = document.getElementById("selection").value;
+            const playerRole = document.getElementById("role").value;
             localStorage.setItem("playerRole", playerRole);
             
-            window.location.href = "game.html";
+            if(playerRole === "GM"){
+                window.location.href = "game_master_view.html";
+            }
+            if(playerRole === "MI"){
+                window.location.href = "master_intuition_view.html";
+            }
         });
     </script>
 </body>

@@ -11,5 +11,3 @@ public class CardController {
         context.getResponse().json(CardsList);
     }
 }
-
-

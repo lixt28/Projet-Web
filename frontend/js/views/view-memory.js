@@ -6,42 +6,22 @@ export class ViewMemory extends Observer {
     #roundActive = false;
     #counterTotalBlue = 0;
     #counter = 0;
+    #roundNumber = 0;
 
     constructor(controllerMemory) {
         super();
-
         this.#controllerMemory = controllerMemory;
         this.#controllerMemory.addObserver(this);
-
-        this.setupEventListeners();
-    }
-
-    setupEventListeners() {
-        document.getElementById("submitHint").addEventListener("click", (event) => {
-            if (this.#hintActive === true) {
-                event.preventDefault();
-
-                const hintValue = document.getElementById("hint").value;
-                const nValue = document.getElementById("n").value;
-
-                document.getElementById("hintText").textContent = hintValue;
-                document.getElementById("hintN").textContent = nValue;
-
-                const roundNumberElement = document.getElementById("roundNumber");
-                let roundNumber = parseInt(roundNumberElement.textContent);
-                roundNumber++;
-                roundNumberElement.textContent = roundNumber;
-
-                this.#hintActive = false;
-                this.#roundActive = true;
-            }
-        });
+        this.setNewHint();
+        this.updateHint();
     }
 
     notify() {
         this.displayCards();
         this.displayPlayers();
-        this.round();
+        this.setNewHint();
+        this.updateHint();
+        this.newRound();
     }
 
     displayCards() {
@@ -86,13 +66,6 @@ export class ViewMemory extends Observer {
         } else if (card.color === "Black") {
             newCard.classList.add("black");
         }
-
-        newCard.addEventListener("click", () => {
-            if (this.#roundActive === true) {
-                this.roundScore(newCard);
-            }
-        });
-
         document.querySelector(".cards").appendChild(newCard);
     }
 
@@ -107,60 +80,208 @@ export class ViewMemory extends Observer {
         }
     }
 
-    round() {
-        if (this.#roundActive === true) {
-            document.querySelectorAll('.card').forEach(card => {
+    // setNewHint() {
+    //     if(localStorage.getItem("hintActive")) { this.#hintActive = localStorage.getItem("hintActive"); }
+    //     if(localStorage.getItem("roundActive")) { this.#roundActive = localStorage.getItem("roundActive"); }
+    //     if(localStorage.getItem("roundNumber")) { this.#roundNumber = localStorage.getItem("roundNumber"); }
+    
+    //     console.log(this.#hintActive);
+    
+    //     if(localStorage.getItem("playerRole") === "GM") {
+    //         const submitHintButton = document.getElementById("submitHint");
+    //         const submitHintHandler = (event) => {
+    //             if (this.#hintActive === true) {
+                    
+    //                 event.preventDefault();
+    
+    //                 const nValue = document.getElementById("n").value;
+    //                 const hintValue = document.getElementById("hint").value;
+    
+    //                 if (nValue.trim() === "" || hintValue.trim() === "") {
+    //                     alert("Warning !! Empty hint or N");
+    //                     return;
+    //                 }
+    
+    //                 document.getElementById("hintText").textContent = hintValue;
+    //                 document.getElementById("hintN").textContent = nValue;
+                    
+    //                 const currentRound = document.getElementById("roundNumber");
+    //                 let roundNumber = parseInt(currentRound.textContent);
+    //                 roundNumber++;
+    //                 currentRound.textContent = roundNumber;
+    
+    //                 localStorage.setItem("nGiven", nValue);
+    //                 localStorage.setItem("hintGiven", hintValue);
+    //                 localStorage.setItem("currentRound", roundNumber);
+    
+    //                 console.log("Hint '" + hintValue + "' sent successfully with N = " + nValue);
+    //                 console.log("Starting round " + this.#roundNumber);
+    
+    //                 this.#roundNumber += 1;
+    //                 this.#hintActive = false;
+    //                 this.#roundActive = true;
+    
+    //                 localStorage.setItem("hintActive", this.#hintActive);
+    //                 localStorage.setItem("roundActive", this.#roundActive);
+    //                 localStorage.setItem("roundNumber", this.#roundNumber);
+    
+    //                 // submitHintButton.disabled = true;
+    
+    //                 // Supprimer l'écouteur d'événements après soumission des indices
+    //                 submitHintButton.removeEventListener("click", submitHintHandler);
+    //             }
+    //         };
+    
+    //         submitHintButton.addEventListener("click", submitHintHandler);
+    //     }
+    //     setTimeout(this.setNewHint.bind(this), 2000);
+    // }
+    
+
+    setNewHint() {
+        if(localStorage.getItem("hintActive")) { this.#hintActive = localStorage.getItem("hintActive"); }
+        if(localStorage.getItem("roundActive")) { this.#roundActive = localStorage.getItem("roundActive"); }
+        if(localStorage.getItem("roundNumber")) { this.#roundNumber = localStorage.getItem("roundNumber"); }
+
+        console.log(this.#hintActive);
+
+        if(localStorage.getItem("playerRole") === "GM") {
+            document.getElementById("submitHint").addEventListener("click", (event) => {
+                if (this.#hintActive === true) {
+                    
+                    event.preventDefault();
+    
+                    const nValue = document.getElementById("n").value;
+                    const hintValue = document.getElementById("hint").value;
+
+                    if (nValue.trim() === "" || hintValue.trim() === "") {
+                        alert("Warning !! Empty hint or N");
+                        return;
+                    }
+    
+                    document.getElementById("hintText").textContent = hintValue;
+                    document.getElementById("hintN").textContent = nValue;
+                    
+                    const currentRound = document.getElementById("roundNumber");
+                    let roundNumber = parseInt(currentRound.textContent);
+                    roundNumber++;
+                    currentRound.textContent = roundNumber;
+    
+                    localStorage.setItem("nGiven", nValue);
+                    localStorage.setItem("hintGiven", hintValue);
+                    localStorage.setItem("currentRound", roundNumber);
+    
+                    console.log("Hint '" + hintValue + "' sent successfully with N = " + nValue);
+                    console.log("Starting round " + this.#roundNumber);
+    
+                    this.#roundNumber += 1;
+                    this.#hintActive = false;
+                    this.#roundActive = true;
+
+                    localStorage.setItem("hintActive", this.#hintActive);
+                    localStorage.setItem("roundActive", this.#roundActive);
+                    localStorage.setItem("roundNumber", this.#roundNumber);
+
+                    document.getElementById("submitHint").disabled = true;
+
+                    return;
+                }
+
+                return;
+                
+            });
+            
+        }
+        setTimeout(this.setNewHint.bind(this), 2000);
+    }
+
+    updateHint() {
+        if(localStorage.getItem("hintActive")) { this.#hintActive = localStorage.getItem("hintActive"); }
+        if(localStorage.getItem("roundActive")) { this.#roundActive = localStorage.getItem("roundActive"); }
+        if(localStorage.getItem("roundNumber")) { this.#roundNumber = localStorage.getItem("roundNumber"); }
+        
+        if (localStorage.getItem("playerRole") === "MI") {
+            const hintGiven = localStorage.getItem("hintGiven");
+            const nGiven = localStorage.getItem("nGiven");
+            const roundNumber = localStorage.getItem("currentRound");
+
+            if(hintGiven && nGiven && roundNumber) {
+                document.getElementById("hintText").textContent = hintGiven;
+                console.log("Hint '" + hintGiven + "' has been received");
+
+                document.getElementById("hintN").textContent = nGiven;
+                console.log("GM thinks '" + hintGiven + "' match with " + nGiven + " words");
+
+                document.getElementById("roundNumber").textContent = roundNumber;
+                console.log("Starting round " + roundNumber);
+            }
+        }
+        setTimeout(this.updateHint.bind(this), 2000);
+    }
+
+    newRound() {
+        if(localStorage.getItem("playerRole") === "MI") {
+            const cards = document.querySelectorAll(".card.hidden");
+            cards.forEach(card => {
                 card.addEventListener("click", () => {
-                    this.roundScore(card);
+                    if(this.#roundActive) {
+                        console.log("KAKAKAKAK");
+                        const roundScoreElement = document.getElementById("roundScore");
+                        let roundScore = parseInt(roundScoreElement.textContent);
+                        const n = parseInt(document.getElementById("hintN").textContent);
+    
+                        if (card.classList.contains("hidden")) {
+                            card.classList.remove("hidden");
+                            card.classList.add("revealed");
+                            if (card.classList.contains("blue")) {
+                                this.#counterTotalBlue++;
+                                this.#counter++;
+                                if (this.#counter > n) {
+                                    roundScore += Math.pow(this.#counter, 2);
+                                    this.#roundActive = false;
+                                    this.#hintActive = true;
+                                    this.#counter = 0;
+                                } else {
+                                    roundScore += this.#counter;
+                                }
+                                if (this.#counterTotalBlue === 8) {
+                                    this.win(roundScore);
+                                    return;
+                                }
+                            } else if (card.classList.contains("gray")) {
+                                this.#roundActive = false;
+                                this.#hintActive = true;
+
+                                localStorage.setItem("hintActive", this.#hintActive);
+                                localStorage.setItem("roundActive", this.#roundActive);
+
+                                cards.forEach(c => {
+                                    c.replaceWith(c.cloneNode(true));
+                                });
+                                return;
+    
+                            } else if (card.classList.contains("black")) {
+                                this.gameOver(roundScore);
+                                return;
+                            }
+    
+                            roundScoreElement.textContent = roundScore;
+                                
+                            localStorage.setItem("hintActive", this.#hintActive);
+                            localStorage.setItem("roundActive", this.#roundActive);
+                            localStorage.setItem("counterTotalBlue", this.#counterTotalBlue);
+                        }
+                    }
                 });
             });
         }
     }
 
-    roundScore(card) {
-        const roundScoreElement = document.getElementById("roundScore");
-        let roundScore = parseInt(roundScoreElement.textContent);
-        const n = parseInt(document.getElementById("hintN").textContent);
-
-        if (card.classList.contains("hidden")) {
-            card.classList.remove("hidden");
-            card.classList.add("revealed");
-
-            if (card.classList.contains("blue")) {
-                this.#counterTotalBlue++;
-                this.#counter++;
-
-                if (this.#counter > n) {
-                    roundScore += Math.pow(this.#counter, 2);
-                    this.#roundActive = false;
-                    this.#hintActive = true;
-                    this.#counter = 0;
-                } else {
-                    roundScore += this.#counter;
-                }
-                if(this.#counterTotalBlue === 8) {
-                    this.win(roundScore);
-                    return;
-                } 
-            } else if (card.classList.contains("gray")) {
-                this.#roundActive = false;
-                this.#hintActive = true;
-            } else if (card.classList.contains("black")) {
-                this.gameOver(roundScore);
-                return;
-            }
-            
-            roundScoreElement.textContent = roundScore;
-        }
-    }
-
     gameOver(score) {
-        // Redirige vers la page "game_over.html" avec le score final comme paramètre d'URL
         window.location.href = `game_over.html?score=${score}`;
     }
 
     win(score) {
-        // Affiche la page de victoire avec le score final
         window.location.href = `win.html?score=${score}`;
     }
 }
