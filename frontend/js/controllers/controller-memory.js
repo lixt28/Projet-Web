@@ -11,8 +11,8 @@ export class ControllerMemory extends Notifier {
 
     get memory() { return this.#memory }
 
-    newGame() {
-        this.#memory.newGame(25);  // Start a new game with 25 unique cards
+    async newGame() {
+        await this.#memory.newGame(25);
         this.notify('New Game');
         this.saveGame();
     }

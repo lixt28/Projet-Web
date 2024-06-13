@@ -41,10 +41,8 @@ console.log('JSON envoyé:', JSON.stringify({
 })
 .then(response => response.json())
 .then(data => {
-    console.log(data);
-    console.log(JSON.stringify(JSON.parse(data).message));
-    console.log(JSON.stringify(JSON.parse(data).partCode));
-    console.log(JSON.stringify(JSON.parse(data).role));
+    
+   
     alert(JSON.stringify(JSON.parse(data).message));
 
     const trimmedMessage = JSON.parse(data).message.trim().toLowerCase();
@@ -53,14 +51,22 @@ console.log('JSON envoyé:', JSON.stringify({
 
     if (trimmedMessage === successMessageMj || trimmedMessage === successMessageMi) {
        
-        setTimeout(() => {
-            const partCode = encodeURIComponent(JSON.parse(data).partCode); // Assurez-vous d'envoyer partCode et role depuis le backend
-            const role = encodeURIComponent(JSON.parse(data).role);
-            // Redirigez l'utilisateur vers la page jeu.html après avoir traité le formulaire
-            window.location.href = `jeu.html?partCode=${partCode}&role=${role}`;
-        }, 3000); // Délai de 3 secondes
+        
+        const partCode = encodeURIComponent(JSON.parse(data).partCode); // Assurez-vous d'envoyer partCode et role depuis le backend
+        const role = encodeURIComponent(JSON.parse(data).role);
+        console.log(role);
+        compare = "mj";
+        console.log(compare);
+        console.log(typeof(partCode));
+            
+            if (role === "mj") {
+                window.location.href = `./game_master_view.html?partCode=${partCode}&role=${role}`;
+            } else if (role === "mi") {
+                window.location.href = `./master_intuition_view.html?partCode=${partCode}&role=${role}`;
+            } 
+            
     } else {
-        window.location.href = 'index.html';
+        window.location.href = '../index.html';
     }
 })
 .catch((error) => {

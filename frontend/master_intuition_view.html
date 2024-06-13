@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MI View</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="column">
+            <div class="players-container">
+                <h2>Players</h2>
+                <p>Game Master : <span id="player_1"></span></p>
+                <p>Master of Intuitions : <span id="player_2"></span></p>
+            </div>
+        </div>
+        <div class="column">
+            <div class="cards"></div>
+        </div>
+        <div class="column">
+            <div class="round-info">
+                <h2>Round Number</h2>
+                <p id="roundNumber">0</p>
+            </div>
+            <div class="hint-info">
+                <h2>Hint</h2>
+                <div class="hint-n-container">
+                    <label>N = </label>
+                    <p id="hintN">0</p>
+                </div>
+                <p id="hintText">No hint yet</p>
+            </div>
+            <div class="score-info">
+                <h2>Round Score</h2>
+                <p id="roundScore">0</p>
+            </div>
+        </div>
+    </div>
+    <script src="js/main.js" type="module"></script>
+</body>
+</html>
+
+    <!-- <script>
+        function updateHintFromStorage() {
+            const hintGiven = localStorage.getItem('hintGiven');
+            const nGiven = localStorage.getItem('nGiven');
+            if (hintGiven && nGiven) {
+                document.getElementById('hintText').textContent = hintGiven;
+                document.getElementById('hintN').textContent = nGiven;
+                console.log('Hint updated from storage:', hintGiven, nGiven);
+            }
+        }
+
+        window.addEventListener('storage', function(event) {
+            if (event.key === 'hintGiven' || event.key === 'nGiven') {
+                updateHintFromStorage();
+            }
+        });
+
+        updateHintFromStorage();
+    </script> -->
+    
