@@ -14,8 +14,8 @@ import models.Part;
 
 public class PartDAO {
 
-    private boolean VerificationMemberPart(int gameId) {
-        boolean canJoin = true; // Initialisation à true, car vous voulez retourner true si le nombre de lignes est supérieur à 2
+    private boolean VerificationNumberPart(int gameId) {
+        boolean canJoin = false; 
         
         try {
             PolyNamesDatabase connexion = new PolyNamesDatabase(); // Assurez-vous que PolyNamesDatabase est correctement initialisé
@@ -27,8 +27,8 @@ public class PartDAO {
             
             if (rs.next()) {
                 int count = rs.getInt("player_count");
-                if (count > 2) {
-                    canJoin = false;
+                if (count < 2) {
+                    canJoin = true;
                     System.out.println("Vous ne pouvez pas accéder : deux joueurs déjà connectés");
                 }
             }
@@ -79,9 +79,9 @@ public class PartDAO {
                     System.out.println("Insertion réussie des informations du createur de la partie   !");
                     if(part.role().equals("mj"))
                     { 
-                        return  "Bonne chance dans l'univers des cartes Maitre du jeu";
+                        return  "Bonne chance dans l'univers des cartes Maitre du jeu,mj";
                     }else{
-                        return  "Bonne chance dans l'univers des cartes Maitre des intuitions";
+                        return  "Bonne chance dans l'univers des cartes Maitre des intuitions,mi";
                     }
                     
                 } else {
@@ -96,7 +96,7 @@ public class PartDAO {
     }
 
     public String jointPart(Part partData) {
-       
+        String Message = "";
         try{
             
             String name = partData.name();
@@ -118,13 +118,13 @@ public class PartDAO {
             }
 
              // Vérification des membres
-             if (VerificationMemberPart(gameId)) {
+             if (VerificationNumberPart(gameId)) {
              
             String sql2 = "INSERT INTO player (name) VALUES (?)";
             PreparedStatement statement2 = connexion.prepareStatement(sql2,Statement.RETURN_GENERATED_KEYS);
             statement2.setString(1, name);
             int rowsAffectedPlayer =  statement2.executeUpdate();
-            ResultSet rs2 = statement1.getGeneratedKeys();
+            ResultSet rs2 = statement2.getGeneratedKeys();
             int player2_Id = 0;
             if (rs2.next()) {
                 player2_Id = rs2.getInt(1);
@@ -161,21 +161,21 @@ public class PartDAO {
                 if (rowsAffectedPlayer > 0 && results4> 0 ) {
                     if(newRole.equals("mj"))
                     { 
-                        return  "Bonne chance dans l'univers des cartes Maitre du jeu";
+                        Message = "Bonne chance dans l'univers des cartes Maitre du jeu,mj"; 
                     }else{
-                        return  "Bonne chance dans l'univers des cartes Maitre des intuitions";
+                        Message =  "Bonne chance dans l'univers des cartes Maitre des intuitions,mi";
                     }
                 } else {
-                    return  "Erreur d'insertion";
+                    Message =  "Erreur d'insertion";
                 }
         }else {
             System.out.println("Vous ne pouvez plus rejoindre la partie");
-            return "vous ne pouvez plus rejoindre la partie. Deux joueurs deja connectés";
+            return "vous ne pouvez plus rejoindre la partie, Deux joueurs deja connectés";
         }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return  "ERREUR";
+        return  Message ;
     
     }
 }
