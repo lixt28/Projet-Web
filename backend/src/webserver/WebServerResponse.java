@@ -33,6 +33,12 @@ public class WebServerResponse {
 
         this.send(200, gson.toJson(object));
     }
+    public void json(String object) {
+        final GsonBuilder builder = new GsonBuilder();
+        final Gson gson = builder.create();
+
+        this.send(200, gson.toJson(object));
+    }
 
     public void send(int statusCode, String message) {
         this.initCors();

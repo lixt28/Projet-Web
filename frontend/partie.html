@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Création de partie - PolyNames</title>
     <link rel="stylesheet" href="styles.css">
+    <script>
+        // Cette ligne recharge la page chaque fois qu'elle est visitée
+        window.onload = function() {
+            // Vérifiez si le paramètre `reload` est déjà présent
+            const urlParams = new URLSearchParams(window.location.search);
+            if (!urlParams.has('reload')) {
+                // Ajoutez le paramètre `reload` pour éviter une boucle infinie de rechargements
+                urlParams.append('reload', 'true');
+                window.location.search = urlParams.toString();
+            }
+        };
+    </script>
 </head>
 <body class="creation">
     <div class="container">
