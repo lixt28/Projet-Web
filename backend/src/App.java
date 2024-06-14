@@ -9,15 +9,19 @@ public class App {
         try {
             WebServer webserver = new WebServer();
             webserver.listen(8080);
+
+            //Route pour envoyer la liste des cards de la base de donnees
             webserver.getRouter().get(
                 "/cards", 
                 (WebServerContext context) -> { CardController.findAll(context); }
             );
+
+            //Route pour recuperer les donnees pour creer et  rejoindre une partie
             webserver.getRouter().post(
                 "/part", 
-                (WebServerContext context) -> { 
-                    System.out.println("Handling /part post request");
-                    PartController.insertNewPart(context); }
+                (WebServerContext request) -> { 
+                    System.out.println("Handling /part post request ");
+                    PartController.insertNewPart(request); }
             );
             
 

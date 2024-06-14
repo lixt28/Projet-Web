@@ -18,6 +18,7 @@ public class PartDAO {
     String toMuchPlayerNotifier = "Can't reach the game because to much player already,";
     String errorInformationPlayer = "Error inserting the game creator's information,";
 
+    //Fonction de verification s'il existe moins de joueurs associé a une partie
     private boolean VerificationNumberPart(int gameId) {
         boolean canJoin = false; 
         
@@ -46,6 +47,8 @@ public class PartDAO {
         return canJoin;
     }
     
+
+    //Fonction pour inserer les informations du createur de la partie
     public String insertPart(Part part) {
         try {
             
@@ -99,6 +102,7 @@ public class PartDAO {
         return toMuchPlayerNotifier;
     }
 
+    //Fonction pour inserer les informations de celui qui rejoins la partie
     public String jointPart(Part partData) {
         String Message = "";
         try{
@@ -121,8 +125,8 @@ public class PartDAO {
                 gameId = results1.getInt("game_id");
             }
 
-             // Vérification des membres
-             if (VerificationNumberPart(gameId)) {
+            // Vérification du nombre de joueur relié  au code de la partie entrée 
+            if (VerificationNumberPart(gameId)) {
              
             String sql2 = "INSERT INTO player (name) VALUES (?)";
             PreparedStatement statement2 = connexion.prepareStatement(sql2,Statement.RETURN_GENERATED_KEYS);

@@ -12,8 +12,6 @@ export class ViewMemory extends Observer {
         super();
         this.#controllerMemory = controllerMemory;
         this.#controllerMemory.addObserver(this);
-        this.setNewHint();
-        this.updateHint();
     }
 
     notify() {
@@ -78,72 +76,12 @@ export class ViewMemory extends Observer {
         if (localStorage.getItem("playerRole") === "MI") {
             document.getElementById("player_2").textContent = playerName;
         }
-    }
-
-    // setNewHint() {
-    //     if(localStorage.getItem("hintActive")) { this.#hintActive = localStorage.getItem("hintActive"); }
-    //     if(localStorage.getItem("roundActive")) { this.#roundActive = localStorage.getItem("roundActive"); }
-    //     if(localStorage.getItem("roundNumber")) { this.#roundNumber = localStorage.getItem("roundNumber"); }
-    
-    //     console.log(this.#hintActive);
-    
-    //     if(localStorage.getItem("playerRole") === "GM") {
-    //         const submitHintButton = document.getElementById("submitHint");
-    //         const submitHintHandler = (event) => {
-    //             if (this.#hintActive === true) {
-                    
-    //                 event.preventDefault();
-    
-    //                 const nValue = document.getElementById("n").value;
-    //                 const hintValue = document.getElementById("hint").value;
-    
-    //                 if (nValue.trim() === "" || hintValue.trim() === "") {
-    //                     alert("Warning !! Empty hint or N");
-    //                     return;
-    //                 }
-    
-    //                 document.getElementById("hintText").textContent = hintValue;
-    //                 document.getElementById("hintN").textContent = nValue;
-                    
-    //                 const currentRound = document.getElementById("roundNumber");
-    //                 let roundNumber = parseInt(currentRound.textContent);
-    //                 roundNumber++;
-    //                 currentRound.textContent = roundNumber;
-    
-    //                 localStorage.setItem("nGiven", nValue);
-    //                 localStorage.setItem("hintGiven", hintValue);
-    //                 localStorage.setItem("currentRound", roundNumber);
-    
-    //                 console.log("Hint '" + hintValue + "' sent successfully with N = " + nValue);
-    //                 console.log("Starting round " + this.#roundNumber);
-    
-    //                 this.#roundNumber += 1;
-    //                 this.#hintActive = false;
-    //                 this.#roundActive = true;
-    
-    //                 localStorage.setItem("hintActive", this.#hintActive);
-    //                 localStorage.setItem("roundActive", this.#roundActive);
-    //                 localStorage.setItem("roundNumber", this.#roundNumber);
-    
-    //                 // submitHintButton.disabled = true;
-    
-    //                 // Supprimer l'écouteur d'événements après soumission des indices
-    //                 submitHintButton.removeEventListener("click", submitHintHandler);
-    //             }
-    //         };
-    
-    //         submitHintButton.addEventListener("click", submitHintHandler);
-    //     }
-    //     setTimeout(this.setNewHint.bind(this), 2000);
-    // }
-    
+    }  
 
     setNewHint() {
         if(localStorage.getItem("hintActive")) { this.#hintActive = localStorage.getItem("hintActive"); }
         if(localStorage.getItem("roundActive")) { this.#roundActive = localStorage.getItem("roundActive"); }
         if(localStorage.getItem("roundNumber")) { this.#roundNumber = localStorage.getItem("roundNumber"); }
-
-        console.log(this.#hintActive);
 
         if(localStorage.getItem("playerRole") === "GM") {
             document.getElementById("submitHint").addEventListener("click", (event) => {
@@ -182,50 +120,56 @@ export class ViewMemory extends Observer {
                     localStorage.setItem("roundActive", this.#roundActive);
                     localStorage.setItem("roundNumber", this.#roundNumber);
 
-                    document.getElementById("submitHint").disabled = true;
-
-                    return;
+                    console.log(this.#roundActive);
                 }
-
                 return;
-                
             });
-            
         }
-        setTimeout(this.setNewHint.bind(this), 2000);
     }
 
     updateHint() {
+
         if(localStorage.getItem("hintActive")) { this.#hintActive = localStorage.getItem("hintActive"); }
         if(localStorage.getItem("roundActive")) { this.#roundActive = localStorage.getItem("roundActive"); }
         if(localStorage.getItem("roundNumber")) { this.#roundNumber = localStorage.getItem("roundNumber"); }
         
         if (localStorage.getItem("playerRole") === "MI") {
-            const hintGiven = localStorage.getItem("hintGiven");
-            const nGiven = localStorage.getItem("nGiven");
-            const roundNumber = localStorage.getItem("currentRound");
+            document.getElementById("update").addEventListener("click", (event) => {
 
-            if(hintGiven && nGiven && roundNumber) {
-                document.getElementById("hintText").textContent = hintGiven;
-                console.log("Hint '" + hintGiven + "' has been received");
+                event.preventDefault();
+                console.log(this.#roundActive);
+               
+                const hintGiven = localStorage.getItem("hintGiven");
+                const nGiven = localStorage.getItem("nGiven");
+                const roundNumber = localStorage.getItem("currentRound");
 
-                document.getElementById("hintN").textContent = nGiven;
-                console.log("GM thinks '" + hintGiven + "' match with " + nGiven + " words");
+                if(hintGiven && nGiven && roundNumber) {
+                    document.getElementById("hintText").textContent = hintGiven;
+                    console.log("Hint '" + hintGiven + "' has been received");
 
-                document.getElementById("roundNumber").textContent = roundNumber;
-                console.log("Starting round " + roundNumber);
-            }
+                    document.getElementById("hintN").textContent = nGiven;
+                    console.log("GM thinks '" + hintGiven + "' match with " + nGiven + " words");
+
+                    document.getElementById("roundNumber").textContent = roundNumber;
+                    console.log("Starting round " + roundNumber);
+                }
+                location.reload();
+            }); 
         }
-        setTimeout(this.updateHint.bind(this), 2000);
     }
 
     newRound() {
+
+        if(localStorage.getItem("hintActive")) { this.#hintActive = localStorage.getItem("hintActive"); }
+        if(localStorage.getItem("roundActive")) { this.#roundActive = localStorage.getItem("roundActive"); }
+        if(localStorage.getItem("roundNumber")) { this.#roundNumber = localStorage.getItem("roundNumber"); }
+
+        console.log(this.#roundActive);
         if(localStorage.getItem("playerRole") === "MI") {
             const cards = document.querySelectorAll(".card.hidden");
             cards.forEach(card => {
                 card.addEventListener("click", () => {
                     if(this.#roundActive) {
-                        console.log("KAKAKAKAK");
                         const roundScoreElement = document.getElementById("roundScore");
                         let roundScore = parseInt(roundScoreElement.textContent);
                         const n = parseInt(document.getElementById("hintN").textContent);

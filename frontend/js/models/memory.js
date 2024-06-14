@@ -8,6 +8,7 @@ export class Memory {
         this.#cards = [];
     }
 
+    // Méthode pour mélanger les cartes
     shuffle(array) {
         let currentIndex = array.length;
       
@@ -21,6 +22,7 @@ export class Memory {
         return array;
     }
 
+    // Méthode pour déterminer si une valeur est présente au moins N fois dans un tableau
     isValuePresentAtLeastNTimes(array, value, n) {
         let counter = 0;
         for (let i = 0; i < array.length; i++) {
@@ -33,12 +35,14 @@ export class Memory {
         }
         return false;
     }
-      
+    
+    // Récupérer les cartes dans l'API
     async getCards() {
         const cards= await CardsService.findAll();
         return cards;
     }
 
+    // A la fin de la méthode, prend 25 cartes de mots uniques mélangés avec 8 bleues, 15 grises et 2 noires
     async newGame(cardNumber) {
         this.#cards = [];
         const words = [];
