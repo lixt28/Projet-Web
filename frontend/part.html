@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PolyNames</title>
+    <link rel="stylesheet" href="css/Start.css">
+    <script>
+        // Cette ligne recharge la page chaque fois qu'elle est visitée
+        window.onload = function() {
+            // Vérifiez si le paramètre `reload` est déjà présent
+            const urlParams = new URLSearchParams(window.location.search);
+            if (!urlParams.has('reload')) {
+                // Ajoutez le paramètre `reload` pour éviter une boucle infinie de rechargements
+                urlParams.append('reload', 'true');
+                window.location.search = urlParams.toString();
+            }
+        };
+    </script>
+</head>
+<body class="creation">
+    <div class="container">
+        <div id ="title1">
+            <h1>Création de partie</h1>
+        </div>
+        <div id ="title2">
+            <h1>Rejoindre la partie</h1>
+        </div>
+        <form action="#" method="post" id ="form">
+            <label for="name">Nom :</label>
+            <input type="text" id="name" name="name" required>
+            <div id="role_block">
+                <label for="role">Role :</label>
+                <select id="role" name="role" required>
+                    <option selected disabled value ="null">Choississez un Role</option>
+                    <option value="GM">Maitre du jeu</option>
+                    <option value="MI">Maitre des intuitions</option>
+                    <option value ="aleatoire">Aléatoire</option>
+                </select>
+            </div>
+            <div id="part_code_block" style="display: none;">
+                <label for="part_code">Code de partie :</label>
+                <input type="text" id="part_code" name="part_code" required>
+            </div>
+            <button type="submit" class="bouton"  Onclick="PartManagement()" >Valider</button>
+        </form>
+    </div>
+    <script src="js/script.js">
+        
+    </script>
+</body>
+</html>
