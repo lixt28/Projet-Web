@@ -1,4 +1,4 @@
-function handleSubmit(event) {
+function handleSubMIt(event) {
     event.preventDefault(); // Empêche l'envoi du formulaire
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -44,26 +44,30 @@ console.log('JSON envoyé:', JSON.stringify({
     
    
     alert(JSON.stringify(JSON.parse(data).message));
+    console.log(JSON.stringify(JSON.parse(data)));
 
     const trimmedMessage = JSON.parse(data).message.trim().toLowerCase();
-    const successMessageMj = "bonne chance dans l'univers des cartes maitre du jeu".toLowerCase();
-    const successMessageMi = "bonne chance dans l'univers des cartes maitre des intuitions".toLowerCase();
+    const successMessageMJ = "Good luck ! you are Game Master".toLowerCase();
+    const successMessageMI = "Good luck ! you are Master of Intuitions".toLowerCase();
 
-    if (trimmedMessage === successMessageMj || trimmedMessage === successMessageMi) {
+    if (trimmedMessage === successMessageMJ || trimmedMessage === successMessageMI) {
        
         
-        const partCode = encodeURIComponent(JSON.parse(data).partCode); // Assurez-vous d'envoyer partCode et role depuis le backend
+        const partCode = encodeURIComponent(JSON.parse(data).partCode); 
         const role = encodeURIComponent(JSON.parse(data).role);
-        console.log(role);
-        compare = "mj";
-        console.log(compare);
-        console.log(typeof(partCode));
-            
-            if (role === "mj") {
-                window.location.href = `./game_master_view.html?partCode=${partCode}&role=${role}`;
-            } else if (role === "mi") {
-                window.location.href = `./master_intuition_view.html?partCode=${partCode}&role=${role}`;
+        console.log(JSON.parse(data).role);
+        
+        localStorage.setItem("playerName", name);
+        
+        localStorage.setItem("playerRole", role);
+            if (role === "GM") {
+                window.location.href = './game_master_view.html';
             } 
+            if (role === "MI") {
+                window.location.href = './master_intuition_view.html';
+                console.log(localStorage.getItem("playerRole"));
+            } 
+
             
     } else {
         window.location.href = '../index.html';
@@ -77,9 +81,9 @@ console.log('JSON envoyé:', JSON.stringify({
 
 
 function choisirRoleAleatoire() {
-    var roles = ['mj', 'mi'];
-    var randomIndex = Math.floor(Math.random() * roles.length);
-    return roles[randomIndex];
+    var roles = ['GM', 'MI'];
+    var randoMIndex = Math.floor(Math.random() * roles.length);
+    return roles[randoMIndex];
 }
 function generatePartCode() {
     // Générez un code de partie aléatoire, par exemple, une chaîne de caractères aléatoire
@@ -111,7 +115,7 @@ function PartManagement() {
         join_part_Input.removeAttribute('required');
     }
 
-    document.getElementById('form').addEventListener('submit', handleSubmit);
+    document.getElementById('form').addEventListener('submit', handleSubMIt);
 }
 
 window.addEventListener("load", PartManagement);

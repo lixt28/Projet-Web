@@ -27,39 +27,36 @@ public class PartController {
             if(partData.IsnotcreatorOfGame().equals("false")){
                 partMessage = partDAO.insertPart(partData);
                 
-            }else{
-
-                partMessage  = partDAO.jointPart(partData); 
-            }
-           
-
-            if(partData.role().equals(""))
-            {
                 int index = partMessage.indexOf(",");
                 if (index != -1)
                 {
                     String firstPart = partMessage.substring(0, index);
                     String secondPart = partMessage.substring(index + 1);
-                    System.out.println("Première partie : " + firstPart);
-                    System.out.println("Deuxième partie : " + secondPart);
-                
-                    String jsonResponse = String.format("{\"message\": \"%s\", \"partCode\": \"%s\", \"role\": \"%s\"}",firstPart,partData.partCode(),secondPart);
-                    request.getResponse().json(jsonResponse);
-                }
-            }else{
-                int index = partMessage.indexOf(",");
-                if (index != -1)
-                {
-                    String firstPart = partMessage.substring(0, index);
-                    String secondPart = partMessage.substring(index + 1);
-                    System.out.println("Première partie : " + firstPart);
+                    System.out.println("Premère partie : " + firstPart);
                     System.out.println("Deuxième partie : " + secondPart);
                 
                     String jsonResponse = String.format("{\"message\": \"%s\", \"partCode\": \"%s\", \"role\": \"%s\"}",firstPart,partData.partCode(),partData.role());
                     request.getResponse().json(jsonResponse);
                 }
-    
+            }else{
+
+                partMessage  = partDAO.jointPart(partData); 
+                int index = partMessage.indexOf(",");
+                if (index != -1)
+                {
+                    String firstPart = partMessage.substring(0, index);
+                    String secondPart = partMessage.substring(index + 1);
+                    System.out.println("Première partie : " + firstPart);
+                    System.out.println("Deuxième partie : " + secondPart);
+                    
+                    
+                    String jsonResponse = String.format("{\"message\": \"%s\", \"partCode\": \"%s\", \"role\": \"%s\"}",firstPart,partData.partCode(),secondPart);
+                    request.getResponse().json(jsonResponse);
+                }
             }
+           
+
+            
 
            
 

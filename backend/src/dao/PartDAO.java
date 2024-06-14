@@ -13,12 +13,16 @@ import database.PolyNamesDatabase;
 import models.Part;
 
 public class PartDAO {
+    String GMNotifier = "Good luck ! you are Game Master,GM";
+    String MINotifier = "Good luck ! you are Master of Intuitions,MI";
+    String toMuchPlayerNotifier = "Can't reach the game because to much player already,";
+    String errorInformationPlayer = "Error inserting the game creator's information,";
 
     private boolean VerificationNumberPart(int gameId) {
         boolean canJoin = false; 
         
         try {
-            PolyNamesDatabase connexion = new PolyNamesDatabase(); // Assurez-vous que PolyNamesDatabase est correctement initialisé
+            PolyNamesDatabase connexion = new PolyNamesDatabase(); 
     
             String sql = "SELECT COUNT(*) AS player_count FROM participate WHERE game_id = ?";
             PreparedStatement statement = connexion.prepareStatement(sql);
@@ -29,11 +33,11 @@ public class PartDAO {
                 int count = rs.getInt("player_count");
                 if (count < 2) {
                     canJoin = true;
-                    System.out.println("Vous ne pouvez pas accéder : deux joueurs déjà connectés");
+                    System.out.println(toMuchPlayerNotifier);
                 }
             }
             
-            rs.close(); // Fermeture des ressources JDBC
+            rs.close(); 
             
         } catch (SQLException e) {
             e.printStackTrace();
@@ -77,22 +81,22 @@ public class PartDAO {
            // Vérification des insertions et affichage des messages de succès ou d'erreur
                 if (rowsAffectedGame> 0 && rowsAffectedPlayer > 0 && rowsAffectedParticipate > 0) {
                     System.out.println("Insertion réussie des informations du createur de la partie   !");
-                    if(part.role().equals("mj"))
+                    if(part.role().equals("GM"))
                     { 
-                        return  "Bonne chance dans l'univers des cartes Maitre du jeu,mj";
+                        return  GMNotifier;
                     }else{
-                        return  "Bonne chance dans l'univers des cartes Maitre des intuitions,mi";
+                        return  MINotifier;
                     }
                     
                 } else {
-                    System.out.println("Erreur lors de l'insertion des informations du createur de la partie .");
-                    return "vous ne pouvez plus rejoindre la partie. Deux joueurs deja connectés";
+                    System.out.println(errorInformationPlayer);
+                    return errorInformationPlayer;
                 }
                     
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return "vous ne pouvez plus rejoindre la partie. Deux joueurs deja connectés";
+        return toMuchPlayerNotifier;
     }
 
     public String jointPart(Part partData) {
@@ -140,11 +144,11 @@ public class PartDAO {
                 PartCreatorRole  =  results3.getString("role");
             }
 
-            if(PartCreatorRole.equals("mi"))
+            if(PartCreatorRole.equals("MI"))
             { 
-                partData = partData.updateRole("mj") ; 
+                partData = partData.updateRole("GM") ; 
             }else{
-                partData = partData.updateRole("mi");
+                partData = partData.updateRole("MI");
             }
 
             
@@ -159,18 +163,18 @@ public class PartDAO {
            
            // Vérification des insertions et affichage des messages de succès ou d'erreur
                 if (rowsAffectedPlayer > 0 && results4> 0 ) {
-                    if(newRole.equals("mj"))
+                    if(newRole.equals("GM"))
                     { 
-                        Message = "Bonne chance dans l'univers des cartes Maitre du jeu,mj"; 
+                        Message = GMNotifier;
                     }else{
-                        Message =  "Bonne chance dans l'univers des cartes Maitre des intuitions,mi";
+                        Message =  MINotifier;
                     }
                 } else {
-                    Message =  "Erreur d'insertion";
+                    Message =  errorInformationPlayer;
                 }
         }else {
-            System.out.println("Vous ne pouvez plus rejoindre la partie");
-            return "vous ne pouvez plus rejoindre la partie, Deux joueurs deja connectés";
+            System.out.println(toMuchPlayerNotifier);
+            return toMuchPlayerNotifier;
         }
         } catch (SQLException e) {
             e.printStackTrace();
